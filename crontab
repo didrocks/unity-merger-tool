@@ -1,0 +1,6 @@
+# m h  dom mon dow   command
+
+5 * * * * /home/unity-merger/bin/fire-tarmac --tarmac-path=/home/unity-merger/tarmac-jenkins /home/unity-merger/tarmac-projects
+20 * * * * /home/unity-merger/bin/fire-tarmac --tarmac-path=/home/unity-merger/tarmac-jenkins /home/unity-merger/tarmac-projects
+35 * * * * /home/unity-merger/bin/fire-tarmac --tarmac-path=/home/unity-merger/tarmac-jenkins /home/unity-merger/tarmac-projects
+50 * * * * /home/unity-merger/bin/fire-tarmac --tarmac-path=/home/unity-merger/tarmac-jenkins /home/unity-merger/tarmac-projects

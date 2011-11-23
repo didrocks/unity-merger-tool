@@ -1,0 +1,92 @@
+# Codenames for Debian suites according to their alias. Update these when
+# needed.
+UNSTABLE_CODENAME="sid"
+TESTING_CODENAME="lenny"
+STABLE_CODENAME="etch"
+
+# List of Debian suites.
+DEBIAN_SUITES=($UNSTABLE_CODENAME $TESTING_CODENAME $STABLE_CODENAME
+    "unstable" "testing" "stable")
+
+# List of Ubuntu suites. Update these when needed.
+UBUNTU_SUITES=("oneiric", "natty", "maverick" "lucid" "karmic jaunty" "intrepid" "hardy" "gutsy")
+
+# Mirrors to use. Update these to your preferred mirror.
+DEBIAN_MIRROR="ftp.us.debian.org"
+UBUNTU_MIRROR="archive.ubuntu.com"
+
+# Optionally use the changelog of a package to determine the suite to use if
+# none set.
+##if [ -z "${DIST}" ] && [ -r "debian/changelog" ]; then
+##    DIST=$(dpkg-parsechangelog | awk '/^Distribution: / {print $2}')
+##    # Use the unstable suite for Debian experimental packages.
+##    if [ "${DIST}" == "experimental" ]; then
+##        DIST="$UNSTABLE_CODENAME"
+##    fi
+##fi
+
+# Optionally set a default distribution if none is used. Note that you can set
+# your own default (i.e. ${DIST:="unstable"}).
+[ -z "$DIST" ] && DIST=${UBUNTU_SUITES[0]%?}
+[ "$DIST" = "UNRELEASED" ] && DIST=${UBUNTU_SUITES[0]%?}
+[ "$DIST" = "unstable" ] && DIST="sid"
+
+# Optionally change Debian codenames in $DIST to their aliases.
+case "$DIST" in
+    $UNSTABLE_CODENAME)
+        DIST="sid"
+        ;;
+    $TESTING_CODENAME)
+        DIST="testing"
+        ;;
+    $STABLE_CODENAME)
+        DIST="stable"
+        ;;
+esac
+
+# Optionally set the architecture to the host architecture if none set. Note
+# that you can set your own default (i.e. ${ARCH:="i386"}).
+: ${ARCH:="$(dpkg --print-architecture)"}
+
+NAME="$DIST"
+if [ -n "${ARCH}" ]; then
+    NAME="$NAME-$ARCH"
+    DEBOOTSTRAPOPTS=("--arch" "$ARCH" "${DEBOOTSTRAPOPTS[@]}")
+fi
+BASETGZ="/var/cache/pbuilder/$NAME-base.tgz"
+DISTRIBUTION="$DIST"
+BUILDRESULT="/var/cache/pbuilder/$NAME/result/"
+APTCACHE="/var/cache/pbuilder/$NAME/aptcache/"
+BUILDPLACE="/var/cache/pbuilder/build/"
+
+# create them if doesn't exist
+mkdir -p $BUILDRESULT
+mkdir -p $APTCACHE
+mkdir -p $BUILDPLACE
+
+if $(echo ${DEBIAN_SUITES[@]} | grep -q $DIST); then
+    # Debian configuration
+    MIRRORSITE="http://$DEBIAN_MIRROR/debian/"
+    COMPONENTS="main contrib non-free"
+elif $(echo ${UBUNTU_SUITES[@]} | grep -q $DIST); then
+    # Ubuntu configuration
+    MIRRORSITE="http://$UBUNTU_MIRROR/ubuntu/"
+    COMPONENTS="main restricted universe multiverse"
+    OTHERMIRROR=""
+else
+    echo "Unknown distribution: $DIST"
+    exit 1
+fi
+
+HOOKDIR="/home/unity-merger/.pbuilder-hooks"
+
+# for simple pool package hook (bindmount in pbuilder):
+export BINDMOUNTS="/var/cache/pbuilder/${NAME}/result"
+export POOL=true
+
+# don't fail if symbols have changed
+#export DPKG_GENSYMBOLS_CHECK_LEVEL=4 
+export DPKG_GENSYMBOLS_CHECK_LEVEL=0
+
+# no hardlink when pbuilder build dir is in tmpfs
+APTCACHEHARDLINK=no

@@ -1,0 +1,16 @@
+#!/bin/sh
+
+BINDMOUNTS=/var/cache/pbuilder/oneiric-amd64/result
+if [ $POOL ]; then
+    cd $BINDMOUNTS
+    d=`pwd`
+    echo $d
+    grep "$d" /etc/apt/sources.list > /dev/null 2>&1
+
+    if [ "$?" != "0" ]; then
+	echo "deb file:$d ./" >> /etc/apt/sources.list
+    fi
+
+    dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
+    apt-get update
+fi
