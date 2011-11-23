@@ -48,11 +48,11 @@ cd $builddir
 # Build and make check in a clean environment now
 pdebuild
 
-# SIGN and DPUT the packcage
+# SIGN and DPUT the package
 # build an orig.tar.gz file and push it to launchpad
 debuild -S -d
 cd ..
-# dput ppa:unity-team/ppa sourcename*version_source.changes
+dput ppa:unity-team/ppa *_source.changes || true
 
 rm -rf $builddir
 
