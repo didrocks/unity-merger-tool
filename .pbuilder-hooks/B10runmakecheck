@@ -1,7 +1,18 @@
 #!/bin/sh
+set -ex
 
 cd /tmp/buildd/*/debian/..
 if [ -f CMakeLists.txt ]; then
     cd obj-`dpkg-architecture -qDEB_BUILD_GNU_TYPE`
 fi
-make check || make check-headless
+# for gtk2/gtk3 specific build, go to the builddir
+# FIXME: any other way to find a better builddir?
+if [ -d build/gtk3 ]; then
+    cd build/gtk3
+fi
+make check-headless || make check
+if [ -d build/gtk2 ]; then
+    cd build/gtk2
+    make check-headless || make check
+fi
+

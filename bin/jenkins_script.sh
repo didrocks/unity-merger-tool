@@ -23,6 +23,7 @@ cd $builddir
 
 # prepare the source branch as if it was released
 if [ -f autogen.sh ]; then
+    cp /usr/share/gtk-doc/data/gtk-doc.make .
     # hack for nux as there is doxygen
     if [ -f doxygen-include.am ]; then
          rm doxygen-include.am
@@ -31,7 +32,7 @@ if [ -f autogen.sh ]; then
     fi
     autoreconf -f -i
     aclocal
-    grep -q IT_PROG_INTLTOOL configure.ac && intltoolize
+    grep -q IT_PROG_INTLTOOL configure.* && intltoolize
 fi
 
 # bump the revision to next packaging version (/!\ target oneiric harcoded there) and create a source tarball

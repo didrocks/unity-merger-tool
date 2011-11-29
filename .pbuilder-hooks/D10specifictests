@@ -1,5 +1,5 @@
 #!/bin/sh
 
 # Not needed for every project, but better than specifying for every of each
-apt-get install -y libgtest-dev google-mock dbus-test-runner
+apt-get install -y libgtest-dev google-mock dbus-test-runner xvfb
 
