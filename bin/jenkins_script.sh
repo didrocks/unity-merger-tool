@@ -53,7 +53,5 @@ pdebuild
 # build an orig.tar.gz file and push it to launchpad
 debuild -S -d
 cd ..
-dput ppa:unity-team/ppa *_source.changes || true
-
-rm -rf $builddir
+dput ppa:unity-team/staging *_source.changes || true
 
