@@ -35,6 +35,9 @@ if [ -f autogen.sh ]; then
     grep -q IT_PROG_INTLTOOL configure.* && intltoolize
 fi
 
+# ignore abi/api change for the build (don't force the package symbol file to be up to date)
+sed -i 's,^\(#\!.*\),\1\nexport DPKG_GENSYMBOLS_CHECK_LEVEL=0,' debian/rules
+
 # bump the revision to next packaging version (/!\ target oneiric harcoded there) and create a source tarball
 export DEBFULLNAME='Unity Merger'
 export DEBEMAIL=unity.merger@gmail.com

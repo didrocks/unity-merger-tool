@@ -1,0 +1,2 @@
+# parallel build
+DEBUILD_DPKG_BUILDPACKAGE_OPTS=-j8

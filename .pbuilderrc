@@ -84,9 +84,5 @@ HOOKDIR="/home/unity-merger/.pbuilder-hooks"
 export BINDMOUNTS="/var/cache/pbuilder/${NAME}/result"
 export POOL=true
 
-# don't fail if symbols have changed
-#export DPKG_GENSYMBOLS_CHECK_LEVEL=4 
-export DPKG_GENSYMBOLS_CHECK_LEVEL=0
-
 # no hardlink when pbuilder build dir is in tmpfs
 APTCACHEHARDLINK=no
