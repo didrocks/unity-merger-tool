@@ -46,6 +46,8 @@ version=${version}ubuntu0+${packaging_rev}
 sourcename=`dpkg-parsechangelog | awk '/^Source/ {print $2}'`
 dch -v $version 'Automatic daily build' -D oneiric
 cd ..
+# TODO: maybe separate this script in two steps so that we can have some hooks like this one for unity:
+# sed -i 's/^Recommends: unity-lens-applications/Recommends: checkbox-unity,\n            unity-lens-applications/' debian/control
 tar -czf ${sourcename}_${version}.orig.tar.gz trunk
 cd $builddir
 
@@ -57,4 +59,4 @@ pdebuild
 debuild -S -d
 cd ..
 dput ppa:unity-team/staging *_source.changes || true
-
+python wait_on_ppa.py -s ${sourcename} -v ${version}
