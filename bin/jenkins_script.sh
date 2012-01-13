@@ -38,13 +38,16 @@ fi
 # ignore abi/api change for the build (don't force the package symbol file to be up to date)
 sed -i 's,^\(#\!.*\),\1\nexport DPKG_GENSYMBOLS_CHECK_LEVEL=0,' debian/rules
 
-# bump the revision to next packaging version (/!\ target oneiric harcoded there) and create a source tarball
+# Unity specific: add for unity-common a Recommends on checkbox-unity
+sed -i 's,Package: unity-common,Package: unity-common\nRecommends: checkbox-unity,' debian/control
+
+# bump the revision to next packaging version (/!\ target precise harcoded there) and create a source tarball
 export DEBFULLNAME='Unity Merger'
 export DEBEMAIL=unity.merger@gmail.com
 version=`dpkg-parsechangelog | awk '/^Version/ {print $2}' | sed -e "s/\(.*\)-[0-9]ubuntu.*/\1/"`+bzr${trunkrev}
 version=${version}ubuntu0+${packaging_rev}
 sourcename=`dpkg-parsechangelog | awk '/^Source/ {print $2}'`
-dch -v $version 'Automatic daily build' -D oneiric
+dch -v $version 'Automatic daily build' -D precise
 cd ..
 tar -czf ${sourcename}_${version}.orig.tar.gz trunk
 cd $builddir

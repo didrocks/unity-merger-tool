@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BINDMOUNTS=/var/cache/pbuilder/oneiric-amd64/result
+BINDMOUNTS=/var/cache/pbuilder/precise-amd64/result
 if [ $POOL ]; then
     cd $BINDMOUNTS
     d=`pwd`
