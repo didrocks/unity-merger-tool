@@ -44,7 +44,7 @@ sed -i 's,Package: unity-common,Package: unity-common\nRecommends: checkbox-unit
 # bump the revision to next packaging version (/!\ target precise harcoded there) and create a source tarball
 export DEBFULLNAME='Unity Merger'
 export DEBEMAIL=unity.merger@gmail.com
-version=`dpkg-parsechangelog | awk '/^Version/ {print $2}' | sed -e "s/\(.*\)-[0-9]ubuntu.*/\1/"`+bzr${trunkrev}
+version=`dpkg-parsechangelog | awk '/^Version/ {print $2}' | sed -e "s/\(.*\)-[0-9]ubuntu.*/\1/"`+bzr$((${trunkrev}+1))
 version=${version}ubuntu0+${packaging_rev}
 sourcename=`dpkg-parsechangelog | awk '/^Source/ {print $2}'`
 dch -v $version 'Automatic daily build' -D precise
