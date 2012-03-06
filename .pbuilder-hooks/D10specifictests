@@ -3,3 +3,8 @@
 # Not needed for every project, but better than specifying for every of each
 apt-get install -y libgtest-dev google-mock dbus-test-runner xvfb
 
+# we need the schema file for unity-2d
+if [ -d /tmp/buildd/*unity-2d* ]; then
+    apt-get install -y unity-common 
+fi
+
