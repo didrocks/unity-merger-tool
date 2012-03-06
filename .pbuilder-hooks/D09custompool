@@ -12,5 +12,8 @@ if [ $POOL ]; then
     fi
 
     dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
-    apt-get update
 fi
+
+# add unity staging ppa for external dep
+echo "deb http://ppa.launchpad.net/unity-team/staging/ubuntu precise main" >> /etc/apt/sources.list
+apt-get update
