@@ -55,9 +55,10 @@ cd $builddir
 # Build and make check in a clean environment now
 pdebuild
 
-# SIGN and DPUT the package
-# build an orig.tar.gz file and push it to launchpad
-debuild -S -d
-cd ..
-dput ppa:unity-team/staging *_source.changes || true
-
+# SIGN and DPUT the package if a ppa is provided
+if [ ! -z "$ppa" ]; then
+    # build an orig.tar.gz file and push it to launchpad
+    debuild -S -d
+    cd ..
+    dput ppa:${ppa} *_source.changes || true
+fi
