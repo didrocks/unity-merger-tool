@@ -55,7 +55,6 @@ if [ -n "${ARCH}" ]; then
 fi
 BASETGZ="/var/cache/pbuilder/$NAME-base.tgz"
 DISTRIBUTION="$DIST"
-BUILDRESULT="/var/cache/pbuilder/$NAME/result/"
 APTCACHE="/var/cache/pbuilder/$NAME/aptcache/"
 BUILDPLACE="/var/cache/pbuilder/build/"
 
@@ -79,10 +78,6 @@ else
 fi
 
 HOOKDIR="/home/unity-merger/.pbuilder-hooks"
-
-# for simple pool package hook (bindmount in pbuilder):
-export BINDMOUNTS="/var/cache/pbuilder/${NAME}/result"
-export POOL=true
 
 # no hardlink when pbuilder build dir is in tmpfs
 APTCACHEHARDLINK=no

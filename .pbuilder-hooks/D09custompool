@@ -1,10 +1,9 @@
 #!/bin/sh
 
-BINDMOUNTS=/var/cache/pbuilder/precise-amd64/result
-if [ $POOL ]; then
-    cd $BINDMOUNTS
+if [ $LOCAL_POOL ]; then
+    cd $LOCAL_POOL
     d=`pwd`
-    echo $d
+    echo "Local pool: $d"
     grep "$d" /etc/apt/sources.list > /dev/null 2>&1
 
     if [ "$?" != "0" ]; then
@@ -14,6 +13,4 @@ if [ $POOL ]; then
     dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
 fi
 
-# add unity staging ppa for external dep
-echo "deb http://ppa.launchpad.net/unity-team/staging/ubuntu precise main" >> /etc/apt/sources.list
 apt-get update

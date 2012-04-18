@@ -5,6 +5,9 @@ set -ex
 [ -z "$trunkrev" ] && echo "No trunkrev specified, aborting" && exit 1
 [ -z "$branch" ] && echo "No branch arg specified, aborting" && exit 1
 
+# TODO: make detection of the target pocket
+pocket='precise'
+
 [ ! -z "${WORKSPACE}" ] && rm -rf ${WORKSPACE}/*
 # create and copy builddir with packaging
 builddir=${WORKSPACE}/trunk
@@ -41,19 +44,25 @@ sed -i 's,^\(#\!.*\),\1\nexport DPKG_GENSYMBOLS_CHECK_LEVEL=0,' debian/rules
 # Unity specific: add for unity-common a Recommends on checkbox-unity
 sed -i 's,Package: unity-common,Package: unity-common\nRecommends: checkbox-unity,' debian/control
 
-# bump the revision to next packaging version (/!\ target precise harcoded there) and create a source tarball
+# bump the revision to next packaging version and create a source tarball
 export DEBFULLNAME='Unity Merger'
 export DEBEMAIL=unity.merger@gmail.com
 version=`dpkg-parsechangelog | awk '/^Version/ {print $2}' | sed -e "s/\(.*\)-[0-9]ubuntu.*/\1/"`+bzr$((${trunkrev}+1))
 version=${version}ubuntu0+${packaging_rev}
 sourcename=`dpkg-parsechangelog | awk '/^Source/ {print $2}'`
-dch -v $version 'Automatic daily build' -D precise
+dch -v $version 'Automatic daily build' -D ${pocket}
 cd ..
 tar -czf ${sourcename}_${version}.orig.tar.gz trunk
 cd $builddir
 
 # Build and make check in a clean environment now
-pdebuild
+# Use a special local repository per ppa
+if [ ! -z "$ppa" ]; then
+    LOCAL_POOL=/var/cache/pbuilder/${pocket}-${ppa/\//--}
+    sudo LOCAL_POOL="$LOCAL_POOL" pdebuild --buildresult $LOCAL_POOL -- --bindmounts $LOCAL_POOL
+else
+    pdebuild
+fi
 
 # SIGN and DPUT the package if a ppa is provided
 if [ ! -z "$ppa" ]; then
