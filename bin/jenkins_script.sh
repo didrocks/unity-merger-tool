@@ -6,7 +6,7 @@ set -ex
 [ -z "$branch" ] && echo "No branch arg specified, aborting" && exit 1
 
 # detect the pocket if not set
-if [ ! -z "$pocket" ]; then
+if [ -z "$pocket" ]; then
     echo "Pocket parameter not set, detection of latest release"
     pocket=`rmadison unity | tail -1 | cut -d\| -f3 | sed 's/\s*\([a-z]*\)\(.*\)/\1/'`
 fi
