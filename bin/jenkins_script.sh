@@ -5,8 +5,12 @@ set -ex
 [ -z "$trunkrev" ] && echo "No trunkrev specified, aborting" && exit 1
 [ -z "$branch" ] && echo "No branch arg specified, aborting" && exit 1
 
-# TODO: make detection of the target pocket
-pocket='precise'
+# detect the pocket if not set
+if [ ! -z "$pocket" ]; then
+    echo "Pocket parameter not set, detection of latest release"
+    pocket=`rmadison unity | tail -1 | cut -d\| -f3 | sed 's/\s*\([a-z]*\)\(.*\)/\1/'`
+fi
+echo "Used pocket: ${pocket}"
 
 [ ! -z "${WORKSPACE}" ] && rm -rf ${WORKSPACE}/*
 # create and copy builddir with packaging
