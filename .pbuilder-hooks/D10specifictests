@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Not needed for every project, but better than specifying for every of each
-apt-get install -y libgtest-dev google-mock dbus-test-runner xvfb
+apt-get install -y libgtest-dev google-mock dbus-test-runner xvfb dbus-x11
 
 # we need the schema file for unity-2d
 if [[ "$SUDO_COMMAND" == *unity-2d* ]]; then

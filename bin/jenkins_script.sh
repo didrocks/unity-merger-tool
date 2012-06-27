@@ -63,7 +63,7 @@ cd $builddir
 # Use a special local repository per ppa
 if [ ! -z "$ppa" ]; then
     export LOCAL_POOL=/var/cache/pbuilder/${pocket}-${ppa/\//--}
-    [ ! -d "$LOCAL_POOL" ] && mkdir $LOCAL_POOL
+    [ ! -d "$LOCAL_POOL" ] && mkdir $LOCAL_POOL && chmod 766 $LOCAL_POOL
     pdebuild --buildresult $LOCAL_POOL -- --bindmounts $LOCAL_POOL
 else
     pdebuild
