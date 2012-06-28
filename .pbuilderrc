@@ -17,13 +17,13 @@ UBUNTU_MIRROR="archive.ubuntu.com"
 
 # Optionally use the changelog of a package to determine the suite to use if
 # none set.
-##if [ -z "${DIST}" ] && [ -r "debian/changelog" ]; then
-##    DIST=$(dpkg-parsechangelog | awk '/^Distribution: / {print $2}')
-##    # Use the unstable suite for Debian experimental packages.
-##    if [ "${DIST}" == "experimental" ]; then
-##        DIST="$UNSTABLE_CODENAME"
-##    fi
-##fi
+if [ -z "${DIST}" ] && [ -r "debian/changelog" ]; then
+    DIST=$(dpkg-parsechangelog | awk '/^Distribution: / {print $2}')
+    # Use the unstable suite for Debian experimental packages.
+    if [ "${DIST}" == "experimental" ]; then
+        DIST="$UNSTABLE_CODENAME"
+    fi
+fi
 
 # Optionally set a default distribution if none is used. Note that you can set
 # your own default (i.e. ${DIST:="unstable"}).
