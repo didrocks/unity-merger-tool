@@ -1,0 +1,6 @@
+#!/bin/sh
+
+export PYTHONPATH=.
+export TARMAC_CONFIG_HOME="/home/unity-merger/tarmac-projects/$1"
+export TARMAC_PID_FILE="$TARMAC_CONFIG_HOME/tarmac.pid"
+bin/tarmac merge --debug
