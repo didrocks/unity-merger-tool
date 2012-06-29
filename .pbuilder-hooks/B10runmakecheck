@@ -10,7 +10,7 @@ fi
 if [ -d build/gtk3 ]; then
     cd build/gtk3
 fi
-make check-headless || make check
+make check-headless || make check || make test
 if [ -d build/gtk2 ]; then
     cd build/gtk2
     make check-headless || make check

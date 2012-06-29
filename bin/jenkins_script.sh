@@ -56,7 +56,7 @@ version=${version}ubuntu0+${packaging_rev}
 sourcename=`dpkg-parsechangelog | awk '/^Source/ {print $2}'`
 dch -v $version 'Automatic daily build' -D ${pocket}
 cd ..
-tar -czf ${sourcename}_${version}.orig.tar.gz trunk
+tar -czf ${sourcename}_${version#1:}.orig.tar.gz trunk
 cd $builddir
 
 # Build and make check in a clean environment now
