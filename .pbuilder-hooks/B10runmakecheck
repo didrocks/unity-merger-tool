@@ -2,6 +2,10 @@
 set -ex
 
 cd /tmp/buildd/*/debian/..
+
+# no test for python lenses for now
+[ -f setup.py ] && exit 0
+
 if [ -f CMakeLists.txt ]; then
     cd obj-`dpkg-architecture -qDEB_BUILD_GNU_TYPE`
 fi

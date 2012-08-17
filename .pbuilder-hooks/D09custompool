@@ -13,4 +13,6 @@ if [ $LOCAL_POOL ]; then
     dpkg-scanpackages . /dev/null | gzip -9c > Packages.gz
 fi
 
+echo "deb http://archive.ubuntu.com/ubuntu/ quantal-proposed main" >> /etc/apt/sources.list
+
 apt-get update
